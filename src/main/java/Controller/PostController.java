@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -45,6 +46,7 @@ public class PostController {
         CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
         var existingUser = userService.findByUsername(user.getUsername());
         post.setUser(existingUser);
+        post.setCreatedAt(LocalDateTime.now());
         postService.createPost(post);
         return "redirect:/";
     }
@@ -55,7 +57,7 @@ public class PostController {
         List<Post> userPosts = postService.getUserPostsByUsername(username);
         model.addAttribute("posts", userPosts);
         model.addAttribute("username", username); // To display the username in the view
-        return "user-posts"; // Name of the view template to display the posts
+        return "search";
     }
 
 }

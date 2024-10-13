@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media App - Home</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
 </head>
 <body>
+<!-- Navbar Section -->
+<nav class="navbar">
+  <div class="nav-left">
+    <form class="search-form" th:action="@{/userposts}" method="get">
+      <input type="text" name="username" placeholder="Search..." class="search-box" required />
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+  </div>
+  <div class="nav-right">
+    <a href="#" th:href="@{/}" class="nav-item">Home</a>
+    <a href="#" th:href="@{/logout}" class="nav-item">Disconnect</a>
+  </div>
+</nav>
 
+<!-- Main Container -->
+<div class="main-container">
+  <div class="background-image"></div>
+
+  <div class="content-box">
+    <!-- Post Form Section -->
+    <div class="add-post">
+      <h2>Create a new post</h2>
+      <form th:action="@{/add}" method="post">
+        <textarea name="content" placeholder="What's on your mind?" class="post-input" required></textarea>
+        <button type="submit" class="post-btn">Post</button>
+      </form>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="posts-container">
+      <h2>Recent Posts</h2>
+      <div th:each="post : ${posts}" class="post">
+        <h3 th:text="${post.user.username}">Username</h3>
+        <p th:text="${post.content}">This is a sample post content!</p>
+        <p>
+          <small style="color: darkgray;" th:text="${#dates.format(post.publishedAt, 'yyyy-MM-dd HH:mm')}">[Published At]</small>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

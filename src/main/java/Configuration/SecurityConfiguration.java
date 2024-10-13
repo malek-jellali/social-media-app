@@ -30,9 +30,11 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register").permitAll()
-                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")

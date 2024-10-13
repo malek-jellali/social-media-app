@@ -18,8 +18,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "content")
     private String content;
+
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
 

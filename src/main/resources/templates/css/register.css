@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+.background-image {
+    background-image: url('/static/images/background.png'); /* Your purple background image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.background-blur {
+    background: #9181F4; /* Unique color for the rectangle */
+    border-radius: 30px;
+    padding: 80px; /* Increase padding for a bigger effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1000px; /* Increase size for the blurry rectangle */
+    height: 600px; /* Increase size for the blurry rectangle */
+    position: relative;
+}
+
+.white-box {
+    background-color: white;
+    padding: 40px; /* Adjust padding for inner spacing */
+    border-radius: 20px;
+    width: 90%; /* Slightly smaller to create a border effect */
+    max-width: 900px; /* Set max-width to be slightly smaller than the blurry rectangle */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+    display: flex; /* Flexbox for alignment */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items */
+}
+
+h1 {
+    font-size: 28px; /* Increased font size */
+    margin-bottom: 20px; /* More spacing below the heading */
+    text-align: center; /* Center the heading text */
+}
+
+p {
+    margin-bottom: 20px;
+    color: #666; /* Slightly lighter text color for better readability */
+    text-align: center; /* Center the paragraph text */
+}
+
+input {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 15px; /* Increased padding for inputs */
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s; /* Transition for border color */
+}
+
+input:focus {
+    border-color: #5038ED; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.register-btn {
+    background: linear-gradient(90deg, #9181F4 0%, #5038ED 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 60px; /* Adjust padding for button */
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-btn:hover {
+    transform: translateY(-5px) scale(1.1); /* Elevation and scale on hover */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Add a shadow */
+}

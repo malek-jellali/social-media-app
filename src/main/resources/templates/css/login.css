@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: "Arial", sans-serif;
+}
+
+.split-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.left-section,
+.right-section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-section {
+  background-color: white;
+}
+
+.right-section {
+  background-image: url('/static/images/background.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.login-box {
+  background-color: white;
+  padding: 60px; /* Increased padding */
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px; /* Increased width */
+}
+
+h1 {
+  font-size: 48px; /* Increased font size */
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+p {
+  margin-bottom: 30px;
+  color: #666;
+  font-size: 18px; /* Increased text size */
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 20px; /* Increased input padding */
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px; /* Increased font size */
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #5038ed;
+  outline: none;
+}
+
+.login-btn {
+  background: linear-gradient(90deg, #9181f4 0%, #5038ed 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 20px 80px; /* Increased button padding */
+  font-size: 22px; /* Increased font size */
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-box {
+  background: rgba(255, 255, 255, 0.2); /* Slight white transparency */
+  backdrop-filter: blur(10px); /* Blurry effect */
+  border-radius: 50%; /* Circular diamond-like shape */
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-message h2 {
+  font-size: 36px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}

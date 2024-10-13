@@ -1,10 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
 <body>
+<div class="split-container">
+  <div class="left-section">
+    <div class="login-box">
+      <h1>LOGIN</h1>
+      <p>Welcome back! Please login to continue.</p>
+
+      <!-- Thymeleaf form that submits to the Spring Security login endpoint -->
+      <form th:action="@{/login}" method="post">
+        <!-- Username field bound to the User object -->
+        <input type="text" th:name="username" placeholder="Username" required />
+
+        <!-- Password field bound to the User object -->
+        <input type="password" th:name="password" placeholder="Password" required />
+
+        <!-- Login button -->
+        <button type="submit" class="login-btn">Login Now</button>
+      </form>
+
+      <!-- Error handling -->
+      <div th:if="${param.error}" style="color: red;">
+        Invalid username or password.
+      </div>
+
+      <!-- Registration link -->
+      <p>Don’t have an account? <a th:href="@{/register}">Register</a></p>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <div class="welcome-box">
+      <div class="welcome-message">
+        <h2>Welcome back!</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Display logout message -->
+<div th:if="${param.logout}">
+  <p>You have been logged out successfully.</p>
+</div>
 
 </body>
 </html>
