@@ -32,7 +32,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
-                        //.requestMatchers("/home").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
                         .anyRequest().authenticated()
                 )

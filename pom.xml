@@ -98,6 +98,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>social-media-app</finalName>
     </build>
 
 </project>
