@@ -1,4 +1,4 @@
-package Configuration;
+package com.jellali.fullstacksocialmedia.Configuration;
 
 
 
@@ -17,6 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Autowired
     CustomUserDetailsService customUserDetailsService;
 
     @Bean
@@ -31,6 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
+                        //.requestMatchers("/home").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
                         .anyRequest().authenticated()
                 )
@@ -38,7 +40,8 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/home", true)
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

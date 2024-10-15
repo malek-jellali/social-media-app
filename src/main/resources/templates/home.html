@@ -10,20 +10,21 @@
 <!-- Navbar Section -->
 <nav class="navbar">
   <div class="nav-left">
-    <form class="search-form" th:action="@{/userposts}" method="get">
+    <form class="search-form" th:action="@{/search}" method="get">
       <input type="text" name="username" placeholder="Search..." class="search-box" required />
       <button type="submit" class="search-btn">Search</button>
     </form>
   </div>
   <div class="nav-right">
-    <a href="#" th:href="@{/}" class="nav-item">Home</a>
+    <a href="#" th:href="@{/home}" class="nav-item">Home</a>
     <a href="#" th:href="@{/logout}" class="nav-item">Disconnect</a>
   </div>
 </nav>
 
 <!-- Main Container -->
 <div class="main-container">
-  <div class="background-image"></div>
+  <div class="background-image" th:style="'background-image: url(' + @{/images/background.png} + ');'"></div>
+
 
   <div class="content-box">
     <!-- Post Form Section -->
@@ -35,16 +36,18 @@
       </form>
     </div>
 
-    <!-- Posts Section -->
     <div class="posts-container">
       <h2>Recent Posts</h2>
-      <div th:each="post : ${posts}" class="post">
-        <h3 th:text="${post.user.username}">Username</h3>
-        <p th:text="${post.content}">This is a sample post content!</p>
-        <p>
-          <small style="color: darkgray;" th:text="${#dates.format(post.publishedAt, 'yyyy-MM-dd HH:mm')}">[Published At]</small>
-        </p>
+      <div class="post" >
+      <div th:each="post : ${posts}">
+            <h3  th:text="${post.user.username}">Username</h3>
+            <p th:text="${post.content}"></p>
+            <small style="color: darkgray;" th:text="${post.createdAt}"></small>
+
       </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </div>

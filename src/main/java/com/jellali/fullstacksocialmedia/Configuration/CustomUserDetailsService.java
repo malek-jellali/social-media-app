@@ -1,7 +1,8 @@
-package Configuration;
+package com.jellali.fullstacksocialmedia.Configuration;
 
-import Entities.User;
-import Repositories.UserRepo;
+import com.jellali.fullstacksocialmedia.Entities.User;
+import com.jellali.fullstacksocialmedia.Repositories.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,10 @@ import java.util.Collection;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+
+    @Autowired
     private UserRepo userRepository;
+
 
     public CustomUserDetailsService(UserRepo userRepository) {
         super();

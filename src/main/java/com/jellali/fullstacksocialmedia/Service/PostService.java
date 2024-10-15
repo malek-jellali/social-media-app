@@ -1,12 +1,13 @@
-package Service;
+package com.jellali.fullstacksocialmedia.Service;
 
 
-import Entities.Post;
-import Repositories.PostRepo;
+import com.jellali.fullstacksocialmedia.Entities.Post;
+import com.jellali.fullstacksocialmedia.Repositories.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -18,7 +19,12 @@ public class PostService {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
+
+
     public List<Post> getUserPostsByUsername(String username){
+         return postRepository.findByUser_Username(username);
+    }
+    public List<Post> getUsernameOfPost(String username){
          return postRepository.findByUser_Username(username);
     }
 

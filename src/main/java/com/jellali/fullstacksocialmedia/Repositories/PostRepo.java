@@ -1,7 +1,7 @@
-package Repositories;
+package com.jellali.fullstacksocialmedia.Repositories;
 
-import Entities.Post;
-import Entities.User;
+import com.jellali.fullstacksocialmedia.Entities.Post;
+import com.jellali.fullstacksocialmedia.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

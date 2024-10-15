@@ -1,17 +1,14 @@
-package Controller;
+package com.jellali.fullstacksocialmedia.Controller;
 
-import Configuration.CustomUserDetails;
-import Entities.Post;
-import Service.PostService;
-import Service.UserService;
+import com.jellali.fullstacksocialmedia.Configuration.CustomUserDetails;
+import com.jellali.fullstacksocialmedia.Entities.Post;
+import com.jellali.fullstacksocialmedia.Service.PostService;
+import com.jellali.fullstacksocialmedia.Service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,12 +24,7 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String home(Model model) {
-        List<Post> posts = postService. getAllPosts();
-        model.addAttribute("posts", posts);
-        return "home";
-    }
+
 
     @GetMapping("/add")
     public String showAddPostForm(Model model) {
@@ -41,23 +33,48 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public String addPost(@ModelAttribute Post post) {
+    public String addPost( Post post , Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
         var existingUser = userService.findByUsername(user.getUsername());
         post.setUser(existingUser);
         post.setCreatedAt(LocalDateTime.now());
         postService.createPost(post);
-        return "redirect:/";
+        List<Post> userPosts = postService.getAllPosts();
+        model.addAttribute("posts", userPosts);
+        return "redirect:/home";
     }
 
-    @GetMapping("/userposts/{username}")
-    public String getPostsByUsername(@PathVariable String username, Model model) {
+
+
+
+
+    @GetMapping("/search")
+    public String getPostsByUsername(@RequestParam String username, Model model) {
         var user = userService.findByUsername(username);
         List<Post> userPosts = postService.getUserPostsByUsername(username);
         model.addAttribute("posts", userPosts);
-        model.addAttribute("username", username); // To display the username in the view
+        model.addAttribute("username", username);
         return "search";
     }
+
+
+    @GetMapping("/home")
+    public String getAllPosts(Model model) {
+        List<Post> userPosts = postService.getAllPosts();
+        if (userPosts.isEmpty()) {
+            System.out.println("No posts found.");
+        } else {
+            userPosts.forEach(post -> System.out.println("Post: " + post.getContent()));
+        }
+        model.addAttribute("posts", userPosts);
+        return "home";
+    }
+
+
+
+
+
+
 
 }

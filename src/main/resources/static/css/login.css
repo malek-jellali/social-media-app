@@ -29,7 +29,6 @@ html {
 }
 
 .right-section {
-  background-image: url('/static/images/background.png');
   background-size: cover;
   background-position: center;
   position: relative;
@@ -37,13 +36,14 @@ html {
 
 .login-box {
   background-color: white;
-  padding: 60px; /* Increased padding */
+  padding: 60px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 600px; /* Increased width */
+  margin: auto;
 }
 
 h1 {
@@ -79,11 +79,13 @@ input:focus {
   color: white;
   border: none;
   border-radius: 30px;
-  padding: 20px 80px; /* Increased button padding */
+  padding: 20px 40px; /* Adjusted button padding */
   font-size: 22px; /* Increased font size */
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 10px; /* Adds space above the button */
+  align-self: center; /* Center the button horizontally */
 }
 
 .login-btn:hover {

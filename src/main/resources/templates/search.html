@@ -1,50 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Social Media App - Search Results</title>
-  <link rel="stylesheet" th:href="@{/css/search.css}" />
-</head>
-<body>
-<!-- Navbar Section -->
-<nav class="navbar">
-  <div class="nav-left">
-    <a th:href="@{/}" class="nav-item">Home</a>
-    <a th:href="@{/add}" class="nav-item">Add Post</a>
-  </div>
-  <div class="nav-center">
-    <form class="search-form" th:action="@{/userposts/{username}(username=${searchUsername})}" method="get">
-      <input type="text" name="username" placeholder="Search..." class="search-box" />
-      <button type="submit" class="search-btn">Search</button>
-    </form>
-  </div>
-  <div class="nav-right">
-    <a th:href="@{/logout}" class="nav-item">Disconnect</a>
-  </div>
-</nav>
 
-<!-- Main Container -->
-<div class="main-container">
-  <div class="background-image"></div>
-  <!-- Background purple image -->
-
-  <div class="content-box">
-    <!-- Posts Section -->
-    <div class="posts-container">
-      <h2>Search Results for: <span th:text="${username}"></span></h2>
-
-      <div th:each="post : ${posts}" class="post">
-        <h3 th:text="${post.user.username}"></h3>
-        <p th:text="${post.content}"></p>
-        <small th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Social Media App - Home</title>
+      <link rel="stylesheet" th:href="@{/css/home.css}" />
+    </head>
+    <body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <form class="search-form" th:action="@{/search}" method="get">
+          <input type="text" name="username" placeholder="Search..." class="search-box" required />
+          <button type="submit" class="search-btn">Search</button>
+        </form>
       </div>
+      <div class="nav-right">
+        <a href="#" th:href="@{/home}" class="nav-item">Home</a>
+        <a href="#" th:href="@{/logout}" class="nav-item">Disconnect</a>
+      </div>
+    </nav>
 
-      <div th:if="${#lists.isEmpty(posts)}">
-        <p>No posts found for this user.</p>
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Background Image -->
+      <div class="background-image" th:style="'background-image: url(' + @{/images/background.png} + ');'"></div>
+
+      <!-- Content Box -->
+      <div class="content-box">
+        <!-- Posts Container -->
+        <div class="posts-container">
+          <h2>Recent Posts</h2>
+          <div th:each="post : ${posts}" class="post">
+            <h3 th:text="${post.user.username}">Username</h3>
+            <p th:text="${post.content}">Post content here</p>
+            <small style="color: darkgray;" th:text="${post.createdAt}">[Created At]</small>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-</body>
-</html>
+    </body>
+    </html>

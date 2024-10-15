@@ -22,7 +22,6 @@ html {
 }
 
 .background-image {
-  background-image: url('/static/images/background.png');
   background-size: cover;
   background-position: center;
   position: fixed; /* Change to fixed */

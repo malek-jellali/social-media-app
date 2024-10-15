@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     height: 100%;
     font-family: 'Arial', sans-serif;
 }
@@ -19,7 +20,6 @@ body, html {
 }
 
 .background-image {
-    background-image: url('/static/images/background.png'); /* Your purple background image */
     background-size: cover; /* Cover the entire area */
     background-position: center;
     position: absolute;
@@ -91,6 +91,8 @@ input:focus {
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px; /* Space above the button */
+    align-self: center; /* Center the button horizontally */
 }
 
 .register-btn:hover {

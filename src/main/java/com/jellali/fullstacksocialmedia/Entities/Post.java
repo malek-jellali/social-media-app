@@ -1,4 +1,4 @@
-package Entities;
+package com.jellali.fullstacksocialmedia.Entities;
 
 
 import jakarta.persistence.*;

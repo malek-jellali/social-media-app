@@ -1,7 +1,7 @@
-package Controller;
+package com.jellali.fullstacksocialmedia.Controller;
 
-import Entities.User;
-import Service.UserService;
+import com.jellali.fullstacksocialmedia.Entities.User;
+import com.jellali.fullstacksocialmedia.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -51,4 +51,6 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "Registration successful!");
         return "redirect:/home"; 
     }
+
+
 }

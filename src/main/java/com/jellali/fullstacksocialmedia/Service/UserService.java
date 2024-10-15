@@ -1,8 +1,8 @@
-package Service;
+package com.jellali.fullstacksocialmedia.Service;
 
 
-import Entities.User;
-import Repositories.UserRepo;
+import com.jellali.fullstacksocialmedia.Entities.User;
+import com.jellali.fullstacksocialmedia.Repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
