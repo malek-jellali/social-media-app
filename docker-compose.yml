@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   springboot-app:
-    image: social-media-app  # Replace with your built image name
+    image: malekjellali1/social-media-app:${IMAGE_TAG} # Replace with your built image name
     build:
       context: .
       dockerfile: Dockerfile
