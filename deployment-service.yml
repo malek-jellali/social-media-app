@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socialmedia-app-deployment
+spec:
+  selector:
+    matchLabels:
+      app: socialmedia-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: socialmedia-app
+    spec:
+      containers:
+        - name: socialmedia-app
+          image: malekjellali1/socialmedia-app:latest # Updated image to private DockerHub image
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+      imagePullSecrets:
+        - name: mysecret # Reference to the Docker registry secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: socialmedia-app-svc
+spec:
+  selector:
+    app: socialmedia-app
+  ports:
+    - protocol: "TCP"
+      port: 8083
+      targetPort: 8083
+  type: LoadBalancer
