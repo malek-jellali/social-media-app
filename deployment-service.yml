@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: socialmedia-app
+      app: social-media-app
   replicas: 2
   template:
     metadata:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: socialmedia-app
-          image: malekjellali1/socialmedia-app:latest # Updated image to private DockerHub image
+          image: malekjellali1/social-media-app:latest # Updated image to private DockerHub image
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
@@ -27,7 +27,7 @@ metadata:
   name: socialmedia-app-svc
 spec:
   selector:
-    app: socialmedia-app
+    app: social-media-app
   ports:
     - protocol: "TCP"
       port: 8083
