@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: socialmedia-app-deployment
+  name: social-media-app-deployment
 spec:
   selector:
     matchLabels:
@@ -10,10 +10,10 @@ spec:
   template:
     metadata:
       labels:
-        app: socialmedia-app
+        app: social-media-app
     spec:
       containers:
-        - name: socialmedia-app
+        - name: social-media-app
           image: malekjellali1/social-media-app:latest # Updated image to private DockerHub image
           imagePullPolicy: Always
           ports:
@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: socialmedia-app-svc
+  name: social-media-app-svc
 spec:
   selector:
     app: social-media-app
