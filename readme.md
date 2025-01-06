@@ -55,9 +55,9 @@
 
  Create a MySQL database named socialMedia:
 
-
+```sql
  CREATE DATABASE socialMedia;
-
+```
 
  Step 2: Update MySQL Credentials 🔑
 
@@ -81,7 +81,7 @@
  Step 3: Build the Application 🚀
 
 
-     Build the application using Maven:
+   Build the application using Maven:
 
 ```bash
  mvn clean install
@@ -99,31 +99,31 @@ The app will start running on http://localhost:8083
  Step 4: Access the Application 🌐
 
 
-     Open your web browser and navigate to http://localhost:8083
+   Open your web browser and navigate to http://localhost:8083
 
-     You will land on the login page. From there, you can:
+   You will land on the login page. From there, you can:
 
-         Register if you're a new user.
+   Register if you're a new user.
 
-         Log in if you already have an account.
+   Log in if you already have an account.
 
-     Once logged in, you can:
+   Once logged in, you can:
 
-         Create and view posts on the homepage.
+   - Create and view posts on the homepage.
 
-         Search for posts using the search bar.
+   - Search for posts using the search bar.
 
 
  💡 Technologies Used
 
 
-     Spring Boot: Backend framework to build the REST API and handle business logic.
+   Spring Boot: Backend framework to build the REST API and handle business logic.
 
-     Thymeleaf: Template engine to render dynamic HTML on the frontend.
+   Thymeleaf: Template engine to render dynamic HTML on the frontend.
 
-     MySQL: Relational database for storing users and posts.
+   MySQL: Relational database for storing users and posts.
 
-     Maven: Build automation tool to manage project dependencies and build the app.
+   Maven: Build automation tool to manage project dependencies and build the app.
 
 
  📝 Database Schema
@@ -132,23 +132,23 @@ The app will start running on http://localhost:8083
  The app uses the following database schema:
 
 
-     Users: Stores user information (username, password, etc.).
+   - Users: Stores user information (username, password, etc.).
 
-     Posts: Stores the notes or thoughts shared by users (content, author, timestamp).
+   - Posts: Stores the notes or thoughts shared by users (content, author, timestamp).
 
 
  🚀 How It Works
 
 
-     Registration: Users can create a new account by providing their username, email, and password.
+Registration: Users can create a new account by providing their username, email, and password.
 
-     Login: Registered users can log in with their credentials.
+ Login: Registered users can log in with their credentials.
 
-     Home Page: Once logged in, users can view the posts created by other users and share their own thoughts.
+ Home Page: Once logged in, users can view the posts created by other users and share their own thoughts.
 
-     Post Creation: Users can create new posts, which will be displayed on the homepage.
+Post Creation: Users can create new posts, which will be displayed on the homepage.
 
-     Search: Users can search for posts by other users.
+Search: Users can search for posts by other users.
 
 
  📦 Deployment
