@@ -14,12 +14,16 @@ spec:
     spec:
       containers:
         - name: social-media-app
-          image: malekjellali1/social-media-app:latest # Updated image to private DockerHub image
+          image: malekjellali1/social-media-app:latest # Public image from DockerHub
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
-      imagePullSecrets:
-        - name: mysecret # Reference to the Docker registry secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health # Adjust this based on your app's health endpoint
+              port: 8083
+            initialDelaySeconds: 5
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
@@ -32,4 +36,6 @@ spec:
     - protocol: "TCP"
       port: 8083
       targetPort: 8083
-  type: LoadBalancer
+  type: NodePort # Use NodePort for local testing in Minikube
+
+
