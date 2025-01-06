@@ -129,7 +129,8 @@ Once logged in, you can:
 
  git clone https://github.com/your_username/social-media-app.git
 
- cd social-media-app
+ cd social-media-app 
+ ```
 
 
  ⚙️ Setup Instructions
@@ -393,7 +394,7 @@ Once logged in, you can:
  mvn clean install
  mvn spring-boot:run
 
- Now you can access the app at http://localhost:8080.
+ Now you can access the app at http://localhost:8083.
  🛠 Troubleshooting
 
      Error: Cannot connect to the database: Ensure your MySQL server is running and the database socialMedia is created.

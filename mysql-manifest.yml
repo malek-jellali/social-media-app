@@ -17,13 +17,22 @@ spec:
           image: mysql:5.7
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "admin"  # Password used in Spring Boot app
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: root-password
             - name: MYSQL_DATABASE
               value: "socialMedia"
             - name: MYSQL_USER
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: username
             - name: MYSQL_PASSWORD
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: password
           readinessProbe:
             exec:
               command:
@@ -34,7 +43,13 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 5
-
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "500m"
+        limits:
+          memory: "1Gi"
+          cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service
@@ -46,4 +61,4 @@ spec:
   ports:
     - port: 3306
       targetPort: 3306
-  type: ClusterIP  # Use ClusterIP for internal communication within the cluster
+  type: ClusterIP

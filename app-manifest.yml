@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: social-media-app
-  replicas: 2
+  replicas: 2  # Start with 2 replicas, can be scaled with HPA
   template:
     metadata:
       labels:
@@ -14,30 +14,50 @@ spec:
     spec:
       containers:
         - name: social-media-app
-          image: malekjellali1/social-media-app:latest # Public image from DockerHub
+          image: malekjellali1/social-media-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
           env:
             - name: MYSQL_HOST
-              value: "mysql"  # The MySQL service name in the same namespace
+              value: "mysql"
             - name: MYSQL_PORT
               value: "3306"
             - name: MYSQL_DATABASE
               value: "socialMedia"
             - name: MYSQL_USER
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: username
             - name: MYSQL_PASSWORD
-              value: "admin"  # Make sure this matches the MySQL password
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials
+                  key: password
           livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8083
-            initialDelaySeconds: 10  # Delay before the first probe attempt
-            periodSeconds: 5         # Interval between probes
-            timeoutSeconds: 3        # How long to wait for a response
-            failureThreshold: 3      # Number of failed probes before marking the pod as unhealthy
-
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 3
+            failureThreshold: 3
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "500m"
+        limits:
+          memory: "1Gi"
+          cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service
@@ -50,4 +70,4 @@ spec:
     - protocol: "TCP"
       port: 8083
       targetPort: 8083
-  type: NodePort # Use NodePort for local testing in Minikube
+  type: NodePort  # You can switch to LoadBalancer or ClusterIP for other environments
