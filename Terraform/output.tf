@@ -1,15 +1,15 @@
-output "cluster_id" {
-  value = aws_eks_cluster.pipeline.id
+# Outputs
+output "cluster_name" {
+  description = "The name of the EKS Cluster"
+  value       = aws_eks_cluster.socialmedia-cluster.name
 }
 
-output "node_group_id" {
-  value = aws_eks_node_group.pipeline.id
+output "cluster_endpoint" {
+  description = "The endpoint for the EKS cluster"
+  value       = aws_eks_cluster.socialmedia-cluster.endpoint
 }
 
-output "vpc_id" {
-  value = aws_vpc.pipeline_vpc.id
-}
-
-output "subnet_ids" {
-  value = aws_subnet.pipeline_subnet[*].id
+output "cluster_certificate_authority" {
+  description = "The certificate authority data for the EKS cluster"
+  value       = aws_eks_cluster.socialmedia-cluster.certificate_authority[0].data
 }

@@ -1,84 +1,177 @@
+
+# Provider Configuration
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
-# Fetch the pre-existing IAM role
-data "aws_iam_role" "LabRole" {
-  name = "LabRole"  # Name of your pre-existing role
-}
+# Data block to get the current AWS Account ID
+data "aws_caller_identity" "current" {}
 
-resource "aws_vpc" "pipeline_vpc" {
+# Create VPC
+resource "aws_vpc" "socialmedia-vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "pipeline-vpc"
+    Name = "socialmedia-vpc"
   }
 }
 
-resource "aws_subnet" "pipeline_subnet" {
-  count = 2
-  vpc_id                  = aws_vpc.pipeline_vpc.id
-  cidr_block              = cidrsubnet(aws_vpc.pipeline_vpc.cidr_block, 8, count.index)
-  availability_zone       = element(["us-east-1a", "us-east-1b"], count.index)
+# Create Public Subnets in Different Availability Zones
+resource "aws_subnet" "public_subnet_a" {
+  vpc_id                  = aws_vpc.socialmedia-vpc.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "pipeline-subnet-${count.index}"
+    Name = "public-subnet-a"
   }
 }
 
-resource "aws_internet_gateway" "pipeline_igw" {
-  vpc_id = aws_vpc.pipeline_vpc.id
+resource "aws_subnet" "public_subnet_b" {
+  vpc_id                  = aws_vpc.socialmedia-vpc.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = "us-east-1b"
+  map_public_ip_on_launch = true
 
   tags = {
-    Name = "pipeline-igw"
+    Name = "public-subnet-b"
   }
 }
 
-resource "aws_route_table" "pipeline_route_table" {
-  vpc_id = aws_vpc.pipeline_vpc.id
+# Create Internet Gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.socialmedia-vpc.id
+
+  tags = {
+    Name = "microservices-igw"
+  }
+}
+
+# Route Table for Public Subnet
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.socialmedia-vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.pipeline_igw.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {
-    Name = "pipeline-route-table"
+    Name = "public-route-table"
   }
 }
 
-resource "aws_route_table_association" "a" {
-  count          = 2
-  subnet_id      = aws_subnet.pipeline_subnet[count.index].id
-  route_table_id = aws_route_table.pipeline_route_table.id
+resource "aws_route_table_association" "public_route_table_association_a" {
+  subnet_id      = aws_subnet.public_subnet_a.id
+  route_table_id = aws_route_table.public_route_table.id
 }
 
-resource "aws_security_group" "pipeline_cluster_sg" {
-  vpc_id = aws_vpc.pipeline_vpc.id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "pipeline-cluster-sg"
-  }
+resource "aws_route_table_association" "public_route_table_association_b" {
+  subnet_id      = aws_subnet.public_subnet_b.id
+  route_table_id = aws_route_table.public_route_table.id
 }
 
-resource "aws_security_group" "pipeline_node_sg" {
-  vpc_id = aws_vpc.pipeline_vpc.id
+
+resource "aws_security_group" "socialmedia-public_node_sg" {
+  vpc_id = aws_vpc.socialmedia-vpc.id
+
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port       = 9999
+    to_port         = 9999
+    protocol        = "tcp"
+  }
+  ingress {
+    from_port       = 3000
+    to_port         = 3000
+    protocol        = "tcp"
+  }
+  ingress {
+    from_port       = 9090
+    to_port         = 9090
+    protocol        = "tcp"
+  }
+  ingress {
+    from_port       = 5000
+    to_port         = 5000
+    protocol        = "tcp"
+  }
+  ingress {
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port       = 3000
+    to_port         = 3000
+    protocol        = "tcp"
+  }
+
+  ingress {
+    from_port   = 8083  # Allow HTTP
+    to_port     = 8083
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow from anywhere
+  }
+  ingress {
+    from_port   = 3306  # Allow HTTP
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow from anywhere
+  }
+
+  # Allow access to the Kubernetes API server on port 6443
+  ingress {
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow HTTPS access to the control plane (port 443)
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+  # Allow kubelet communication on port 10250
+  ingress {
+    from_port   = 10250
+    to_port     = 10250
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow CoreDNS on port 53 (TCP/UDP)
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow etcd communication (if using etcd for HA clusters)
+  ingress {
+    from_port   = 2379
+    to_port     = 2380
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic for nodes to access external services
   egress {
     from_port   = 0
     to_port     = 0
@@ -87,31 +180,63 @@ resource "aws_security_group" "pipeline_node_sg" {
   }
 
   tags = {
-    Name = "pipeline-node-sg"
+    Name = "microservices-public-node-sg"
   }
 }
 
-resource "aws_eks_cluster" "pipeline" {
-  name     = "pipeline-cluster"
-  role_arn = data.aws_iam_role.LabRole.arn  # Reference the existing IAM role
+
+# Create EKS Cluster
+resource "aws_eks_cluster" "socialmedia-cluster" {
+  name     = "microservices-cluster"
+  role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 
   vpc_config {
-    subnet_ids         = aws_subnet.pipeline_subnet[*].id
-    security_group_ids = [aws_security_group.pipeline_cluster_sg.id]
+    subnet_ids         = [
+      aws_subnet.public_subnet_a.id,
+      aws_subnet.public_subnet_b.id
+    ]
+    security_group_ids = [aws_security_group.socialmedia-public_node_sg.id]
+  }
+
+  depends_on = []
+}
+
+# Create Launch Template for Node Group
+resource "aws_launch_template" "node_group_launch_template" {
+  name_prefix   = "node-group-launch-template"
+  instance_type = "t3.medium"
+
+  # Attach the security group to the launch template
+  network_interfaces {
+    security_groups = [aws_security_group.socialmedia-public_node_sg.id]
+  }
+
+  tags = {
+    Name = "microservices-node-group-template"
   }
 }
 
-resource "aws_eks_node_group" "pipeline" {
-  cluster_name    = aws_eks_cluster.pipeline.name
-  node_group_name = "pipeline-node-group"
-  node_role_arn   = data.aws_iam_role.LabRole.arn  # Reference the existing IAM role
-  subnet_ids      = aws_subnet.pipeline_subnet[*].id
+# Create Node Group using Launch Template
+resource "aws_eks_node_group" "socialmedia-node_group" {
+  cluster_name    = aws_eks_cluster.socialmedia-cluster.name
+  node_group_name = "microservices-node-group"
+  node_role_arn   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
+  subnet_ids      = [
+    aws_subnet.public_subnet_a.id,
+    aws_subnet.public_subnet_b.id
+  ]
 
-  scaling_config {
-    desired_size = 3
-    max_size     = 3
-    min_size     = 3
+  # Reference the launch template here
+  launch_template {
+    id      = aws_launch_template.node_group_launch_template.id
+    version = "$Latest"
   }
 
-  instance_types = ["t2.large"]
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
+
+  depends_on = [aws_eks_cluster.socialmedia-cluster]
 }

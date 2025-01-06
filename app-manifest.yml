@@ -18,12 +18,26 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
+          env:
+            - name: MYSQL_HOST
+              value: "mysql"  # The MySQL service name in the same namespace
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: "socialMedia"
+            - name: MYSQL_USER
+              value: "admin"
+            - name: MYSQL_PASSWORD
+              value: "admin"  # Make sure this matches the MySQL password
           livenessProbe:
             httpGet:
-              path: /actuator/health # Adjust this based on your app's health endpoint
+              path: /actuator/health
               port: 8083
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 10  # Delay before the first probe attempt
+            periodSeconds: 5         # Interval between probes
+            timeoutSeconds: 3        # How long to wait for a response
+            failureThreshold: 3      # Number of failed probes before marking the pod as unhealthy
+
 ---
 apiVersion: v1
 kind: Service
@@ -37,5 +51,3 @@ spec:
       port: 8083
       targetPort: 8083
   type: NodePort # Use NodePort for local testing in Minikube
-
-
