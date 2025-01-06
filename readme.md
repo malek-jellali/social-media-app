@@ -169,7 +169,7 @@ Search: Users can search for posts by other users.
  mvn spring-boot:run
 ```
 
- Now you can access the app at http://localhost:8080.
+ Now you can access the app at http://localhost:8083.
 
  🛠 Troubleshooting
 
